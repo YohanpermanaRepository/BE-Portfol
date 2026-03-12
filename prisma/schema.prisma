@@ -1,0 +1,168 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Profile {
+  id             Int     @id @default(autoincrement())
+  name           String
+  profileImage   String?
+  description    String?
+
+  @@map("profile")
+}
+
+model About {
+  id          Int           @id @default(autoincrement())
+  description String?
+  images      AboutImage[]
+
+  @@map("about")
+}
+
+model AboutImage {
+  id        Int     @id @default(autoincrement())
+  aboutId   Int
+  imageUrl  String
+  about     About   @relation(fields: [aboutId], references: [id], onDelete: Cascade)
+
+  @@map("about_images")
+}
+
+model Technology {
+  id                  Int                    @id @default(autoincrement())
+  name                String                 @unique
+  icon                String?
+  projects            ProjectTechnology[]
+
+  @@map("technologies")
+}
+
+model Project {
+  id                  Int                    @id @default(autoincrement())
+  title               String
+  description         String?
+  githubLink          String?
+  demoLink            String?
+  videoUrl            String?
+  isFeatured          Boolean                @default(false)
+  images              ProjectImage[]
+  technologies        ProjectTechnology[]
+
+  @@map("projects")
+}
+
+model ProjectImage {
+  id        Int     @id @default(autoincrement())
+  projectId Int
+  imageUrl  String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("project_images")
+}
+
+model ProjectTechnology {
+  projectId    Int
+  technologyId Int
+  project      Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  technology   Technology @relation(fields: [technologyId], references: [id], onDelete: Cascade)
+
+  @@id([projectId, technologyId])
+  @@map("project_technologies")
+}
+
+model Education {
+  id               Int            @id @default(autoincrement())
+  institution      String
+  degree           String?
+  major            String?
+  logo             String?
+  gpa              Decimal?       @db.Decimal(3, 2)
+  predicate        String?
+  scholarship      String?
+  startDate        String?
+  endDate          String?
+  transcriptLink   String?
+  achievements     Achievement[]
+  publications     Publication[]
+
+  @@map("education")
+}
+
+model Achievement {
+  id          Int       @id @default(autoincrement())
+  educationId Int
+  description String
+  link        String?
+  education   Education @relation(fields: [educationId], references: [id], onDelete: Cascade)
+
+  @@map("achievements")
+}
+
+model Publication {
+  id          Int       @id @default(autoincrement())
+  educationId Int
+  title       String?
+  authors     String?
+  publisher   String?
+  indexLevel  String?
+  year        Int?
+  link        String
+  education   Education @relation(fields: [educationId], references: [id], onDelete: Cascade)
+
+  @@map("publications")
+}
+
+model Experience {
+  id                      Int    @id @default(autoincrement())
+  company                 String
+  position                String
+  logo                    String?
+  description             String?
+  startDate               String?
+  endDate                 String?
+  relatedCertificationId  Int?
+  certification           Certification? @relation(fields: [relatedCertificationId], references: [id], onDelete: SetNull)
+
+  @@map("experience")
+}
+
+model Certification {
+  id          Int          @id @default(autoincrement())
+  category    String?
+  name        String
+  issuer      String?
+  year        Int?
+  link        String?
+  experiences Experience[]
+
+  @@map("certifications")
+}
+
+model Contact {
+  id          Int     @id @default(autoincrement())
+  email       String?
+  instagram   String?
+  youtube     String?
+  linkedin    String?
+  description String?
+
+  @@map("contact")
+}
+
+model User {
+  id        Int     @id @default(autoincrement())
+  username  String  @unique
+  password  String
+  role      String  @default("admin") // admin atau demo
+  createdAt DateTime @default(now())
+
+  @@map("users")
+}
