@@ -62,6 +62,8 @@ app.use('/api/technologies', technologyRoutes);
 app.use('/api/certifications', certificationRoutes);
 app.use('/api/education', educationRoutes);
 app.use('/api/contact', contactRoutes);
+// Alias to support older/newer frontend paths
+app.use('/api/contacts', contactRoutes);
 app.use('/api/about', aboutRoutes);
 app.use('/api/portfolio-context', portfolioContextRoutes);
 app.use('/api/chat', chatRoutes);
