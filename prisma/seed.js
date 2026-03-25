@@ -176,7 +176,43 @@ async function main() {
   });
   console.log('✅ Experience created:', experience.position);
 
-  // 9. Create User (for authentication)
+  // 9. Create Activities (dummy data)
+  console.log('\n🗓️ Creating activities...');
+  await prisma.activity.upsert({
+    where: { id: 1 },
+    update: {},
+    create: {
+      id: 1,
+      title: 'React Workshop',
+      description: 'Hands-on session building modern UIs with React and best practices.',
+      imageUrl: 'https://via.placeholder.com/1200x600',
+    },
+  });
+
+  await prisma.activity.upsert({
+    where: { id: 2 },
+    update: {},
+    create: {
+      id: 2,
+      title: 'Open Source Contribution',
+      description: 'Contributed to community projects and improved features & documentation.',
+      imageUrl: 'https://via.placeholder.com/1200x600',
+    },
+  });
+
+  await prisma.activity.upsert({
+    where: { id: 3 },
+    update: {},
+    create: {
+      id: 3,
+      title: 'Tech Talk: Next.js Performance',
+      description: 'Presented optimization techniques for faster React/Next.js applications.',
+      imageUrl: 'https://via.placeholder.com/1200x600',
+    },
+  });
+  console.log('✅ Activities created');
+
+  // 10. Create User (for authentication)
   console.log('\n👤 Creating user...');
   const bcrypt = require('bcrypt');
   const salt = await bcrypt.genSalt(10);

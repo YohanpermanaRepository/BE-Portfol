@@ -42,6 +42,7 @@ app.use(express.json());
 // Import Routes
 const profileRoutes = require('./routes/profile');
 const experienceRoutes = require('./routes/experience');
+const activityRoutes = require('./routes/activity');
 const projectRoutes = require('./routes/projects');
 const technologyRoutes = require('./routes/technologies');
 const certificationRoutes = require('./routes/certifications');
@@ -57,6 +58,7 @@ const uploadRoutes = require('./routes/upload');
 app.use('/api/auth', authRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/experience', experienceRoutes);
+app.use('/api/activity', activityRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/technologies', technologyRoutes);
 app.use('/api/certifications', certificationRoutes);

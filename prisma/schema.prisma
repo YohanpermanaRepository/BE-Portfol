@@ -134,6 +134,16 @@ model Experience {
   @@map("experience")
 }
 
+model Activity {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  imageUrl    String?
+
+  createdAt   DateTime @default(now())
+  @@map("activity")
+}
+
 model Certification {
   id          Int          @id @default(autoincrement())
   category    String?
