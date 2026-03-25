@@ -86,13 +86,19 @@ exports.getAllActivities = async (req, res) => {
 
 // POST /api/activity
 exports.createActivity = async (req, res) => {
-  const { title, description, images, imageUrl, image } = req.body;
+  const { title, description, images, imageUrl, image, createdAt } = req.body;
 
   if (!title) {
     return res.status(400).json({ message: 'Title is required' });
   }
 
   try {
+    let parsedCreatedAt;
+    if (createdAt !== undefined && createdAt !== null && createdAt !== '') {
+      const d = new Date(createdAt);
+      if (!Number.isNaN(d.getTime())) parsedCreatedAt = d;
+    }
+
     const files = getFilesFromReq(req);
     const uploadedUrls = await uploadFilesToCloudinary(files);
 
@@ -105,6 +111,7 @@ exports.createActivity = async (req, res) => {
       data: {
         title,
         description: description ?? null,
+        ...(parsedCreatedAt ? { createdAt: parsedCreatedAt } : {}),
         ...(normalizedImages.length > 0
           ? {
               images: {
@@ -135,7 +142,7 @@ exports.createActivity = async (req, res) => {
 // PUT /api/activity/:id
 exports.updateActivity = async (req, res) => {
   const { id } = req.params;
-  const { title, description, images, imageUrl, image } = req.body;
+  const { title, description, images, imageUrl, image, createdAt } = req.body;
 
   if (!title) {
     return res.status(400).json({ message: 'Title is required' });
@@ -143,6 +150,12 @@ exports.updateActivity = async (req, res) => {
 
   try {
     const activityId = parseInt(id);
+    let parsedCreatedAt;
+    if (createdAt !== undefined && createdAt !== null && createdAt !== '') {
+      const d = new Date(createdAt);
+      if (!Number.isNaN(d.getTime())) parsedCreatedAt = d;
+    }
+
     const files = getFilesFromReq(req);
     const hasImageInput =
       (Array.isArray(files) && files.length > 0) ||
@@ -161,6 +174,7 @@ exports.updateActivity = async (req, res) => {
         data: {
           title,
           description: description ?? null,
+          ...(parsedCreatedAt ? { createdAt: parsedCreatedAt } : {}),
         },
       });
 
