@@ -182,10 +182,12 @@ npx prisma studio
 npx prisma format
 
 # Check for issues
+# tes
 npx prisma validate
 ```
 
 ---
+
 
 ## ✨ Next Milestone
 
