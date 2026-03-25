@@ -178,36 +178,47 @@ async function main() {
 
   // 9. Create Activities (dummy data)
   console.log('\n🗓️ Creating activities...');
-  await prisma.activity.upsert({
-    where: { id: 1 },
-    update: {},
-    create: {
+  await prisma.activity.deleteMany({});
+
+  await prisma.activity.create({
+    data: {
       id: 1,
       title: 'React Workshop',
       description: 'Hands-on session building modern UIs with React and best practices.',
-      imageUrl: 'https://via.placeholder.com/1200x600',
+      images: {
+        create: [
+          { imageUrl: 'https://via.placeholder.com/1200x600?text=React+Workshop+1' },
+          { imageUrl: 'https://via.placeholder.com/1200x600?text=React+Workshop+2' },
+        ],
+      },
     },
   });
 
-  await prisma.activity.upsert({
-    where: { id: 2 },
-    update: {},
-    create: {
+  await prisma.activity.create({
+    data: {
       id: 2,
       title: 'Open Source Contribution',
       description: 'Contributed to community projects and improved features & documentation.',
-      imageUrl: 'https://via.placeholder.com/1200x600',
+      images: {
+        create: [
+          { imageUrl: 'https://via.placeholder.com/1200x600?text=Open+Source+1' },
+          { imageUrl: 'https://via.placeholder.com/1200x600?text=Open+Source+2' },
+        ],
+      },
     },
   });
 
-  await prisma.activity.upsert({
-    where: { id: 3 },
-    update: {},
-    create: {
+  await prisma.activity.create({
+    data: {
       id: 3,
       title: 'Tech Talk: Next.js Performance',
       description: 'Presented optimization techniques for faster React/Next.js applications.',
-      imageUrl: 'https://via.placeholder.com/1200x600',
+      images: {
+        create: [
+          { imageUrl: 'https://via.placeholder.com/1200x600?text=Next.js+Performance+1' },
+          { imageUrl: 'https://via.placeholder.com/1200x600?text=Next.js+Performance+2' },
+        ],
+      },
     },
   });
   console.log('✅ Activities created');

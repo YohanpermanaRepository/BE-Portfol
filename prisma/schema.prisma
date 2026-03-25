@@ -135,13 +135,23 @@ model Experience {
 }
 
 model Activity {
-  id          Int      @id @default(autoincrement())
+  id          Int             @id @default(autoincrement())
   title       String
   description String?
-  imageUrl    String?
+  images      ActivityImage[]
 
-  createdAt   DateTime @default(now())
+  createdAt   DateTime        @default(now())
   @@map("activity")
+}
+
+model ActivityImage {
+  id         Int      @id @default(autoincrement())
+  activityId Int
+  imageUrl   String
+
+  activity Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+
+  @@map("activity_images")
 }
 
 model Certification {
