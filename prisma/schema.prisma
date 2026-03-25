@@ -152,6 +152,7 @@ model Contact {
   instagram   String?
   youtube     String?
   linkedin    String?
+  whatsapp    String?
   description String?
 
   @@map("contact")

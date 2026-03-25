@@ -10,6 +10,7 @@ exports.getContact = async (req, res) => {
         instagram: true,
         youtube: true,
         linkedin: true,
+        whatsapp: true,
         description: true
       }
     });
@@ -25,7 +26,7 @@ exports.getContact = async (req, res) => {
 };
 
 exports.updateContact = async (req, res) => {
-  const { email, instagram, youtube, linkedin, description } = req.body;
+  const { email, instagram, youtube, linkedin, whatsapp, description } = req.body;
   try {
     await prisma.contact.update({
       where: { id: 1 },
@@ -34,6 +35,7 @@ exports.updateContact = async (req, res) => {
         instagram,
         youtube,
         linkedin,
+        whatsapp,
         description
       }
     });
