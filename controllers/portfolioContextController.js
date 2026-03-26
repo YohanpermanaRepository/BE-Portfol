@@ -114,12 +114,32 @@ const getFullPortfolioContext = async () => {
     }
   });
 
+  const activities = await prisma.activity.findMany({
+    select: {
+      id: true,
+      title: true,
+      description: true,
+      createdAt: true,
+      images: {
+        select: { imageUrl: true }
+      }
+    },
+    orderBy: { createdAt: 'desc' },
+    take: 5
+  });
+
+  const formattedActivities = activities.map(a => ({
+    ...a,
+    images: a.images.map(img => img.imageUrl)
+  }));
+
   return {
     profile,
     experience,
     projects: formattedProjects,
     certifications,
     education,
+    activities: formattedActivities,
     contact,
     about: {
       description: about?.description,
