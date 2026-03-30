@@ -55,6 +55,7 @@ model Project {
   isFeatured          Boolean                @default(false)
   images              ProjectImage[]
   technologies        ProjectTechnology[]
+  experiences         ExperienceProject[]
 
   @@map("projects")
 }
@@ -121,7 +122,7 @@ model Publication {
 }
 
 model Experience {
-  id                      Int    @id @default(autoincrement())
+  id                      Int                     @id @default(autoincrement())
   company                 String
   position                String
   logo                    String?
@@ -129,9 +130,31 @@ model Experience {
   startDate               String?
   endDate                 String?
   relatedCertificationId  Int?
-  certification           Certification? @relation(fields: [relatedCertificationId], references: [id], onDelete: SetNull)
+  certification           Certification?         @relation(fields: [relatedCertificationId], references: [id], onDelete: SetNull)
+  images                  ExperienceImage[]
+  projects                ExperienceProject[]
 
   @@map("experience")
+}
+
+model ExperienceImage {
+  id            Int        @id @default(autoincrement())
+  experienceId  Int
+  imageUrl      String
+  caption       String?
+  experience    Experience @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+
+  @@map("experience_images")
+}
+
+model ExperienceProject {
+  experienceId Int
+  projectId    Int
+  experience   Experience @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+  project      Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@id([experienceId, projectId])
+  @@map("experience_projects")
 }
 
 model Activity {
