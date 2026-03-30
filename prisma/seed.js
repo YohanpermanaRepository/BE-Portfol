@@ -778,8 +778,7 @@ async function main() {
         logo: 'https://media.licdn.com/dms/image/v2/D560BAQEONBPsiZnU8w/company-logo_200_200/company-logo_200_200/0/1729482329489?e=2147483647&v=beta&t=dkMktUDkXt7130IuDwAyygkV13ZUc5gnI4JksnlUQ84',
         description: 'Membimbing peserta pada jalur pembelajaran web front-end dan back-end, mendukung penyelesaian modul serta proyek akhir, menilai capstone project melalui presentasi dan peer review, membantu peserta yang mengalami kesulitan belajar melalui program Coding Camp Buddies dan sesi berbagi di Coding Camp Corner, serta berperan sebagai moderator dan anotator dalam sesi ILT (Instructor-Led Training) yang mencakup materi teknis maupun soft skills.',
         startDate: 'February 2025',
-        endDate: 'July 2025',
-        relatedCertificationId: 18
+        endDate: 'July 2025'
       },
       {
         id: 2,
@@ -788,8 +787,7 @@ async function main() {
         logo: 'https://secure.gravatar.com/avatar/5b745c00e4c4fa6f096af5e7b9d708522438c144192f9b5ea89da43a29d5ce63?s=500&d=blank&r=g',
         description: 'Lulusan Terbaik program Studi Independen Dicoding Batch 6 dalam inisiatif MBKM MSIB berfokus pada pengembangan web front-end dan back-end. Kegiatan ini membekali peserta dengan keterampilan industri di bidang full-stack web development melalui pembelajaran logika pemrograman, Git & GitHub, HTML, CSS, JavaScript, Node.js, serta pembuatan proyek web end-to-end. Selain itu, program ini juga mencakup pengembangan soft skills seperti komunikasi, presentasi, dan persiapan karier profesional.',
         startDate: 'February 2024',
-        endDate: 'June 2024',
-        relatedCertificationId: 23
+        endDate: 'June 2024'
       },
       {
         id: 3,
@@ -798,8 +796,7 @@ async function main() {
         logo: 'https://media.licdn.com/dms/image/v2/D560BAQFTPNPoKrjU-g/company-logo_200_200/company-logo_200_200/0/1737529613391/inosoftweb_logo?e=2147483647&v=beta&t=FMUq1PCiparXJS1WUVhrxSKNB9dKOU4BUDK6PsXHfQw',
         description: 'Membantu mengembangkan website untuk Virtuse dengan menggunakan framework CodeIgniter 4, menerapkan Tailwind CSS, serta mengelola basis data menggunakan SQL. Selain itu, berkontribusi dalam pengembangan e-commerce Mayred berbasis PrestaShop dengan berkolaborasi bersama tim dan melakukan improvisasi seperti modifikasi HTML untuk fitur tertentu.',
         startDate: 'January 2024',
-        endDate: 'February 2024',
-        relatedCertificationId: null
+        endDate: 'February 2024'
       }
     ]
   });

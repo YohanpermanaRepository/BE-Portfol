@@ -129,10 +129,9 @@ model Experience {
   description             String?
   startDate               String?
   endDate                 String?
-  relatedCertificationId  Int?
-  certification           Certification?         @relation(fields: [relatedCertificationId], references: [id], onDelete: SetNull)
   images                  ExperienceImage[]
   projects                ExperienceProject[]
+  certifications          ExperienceCertification[]
 
   @@map("experience")
 }
@@ -157,6 +156,16 @@ model ExperienceProject {
   @@map("experience_projects")
 }
 
+model ExperienceCertification {
+  experienceId    Int
+  certificationId Int
+  experience      Experience    @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+  certification   Certification @relation(fields: [certificationId], references: [id], onDelete: Cascade)
+
+  @@id([experienceId, certificationId])
+  @@map("experience_certifications")
+}
+
 model Activity {
   id          Int             @id @default(autoincrement())
   title       String
@@ -178,13 +187,13 @@ model ActivityImage {
 }
 
 model Certification {
-  id          Int          @id @default(autoincrement())
+  id          Int                       @id @default(autoincrement())
   category    String?
   name        String
   issuer      String?
   year        Int?
   link        String?
-  experiences Experience[]
+  experiences ExperienceCertification[]
 
   @@map("certifications")
 }

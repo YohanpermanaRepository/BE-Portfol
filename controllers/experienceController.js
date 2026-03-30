@@ -10,8 +10,7 @@ exports.getAllExperience = async (req, res) => {
         logo: true,
         description: true,
         startDate: true,
-        endDate: true,
-        relatedCertificationId: true
+        endDate: true
       },
       orderBy: { endDate: 'desc' }
     });
@@ -29,7 +28,11 @@ exports.getExperienceById = async (req, res) => {
     const experience = await prisma.experience.findUnique({
       where: { id: parseInt(id) },
       include: {
-        certification: true,
+        certifications: {
+          include: {
+            certification: true
+          }
+        },
         images: {
           select: {
             id: true,
@@ -66,7 +69,7 @@ exports.getExperienceById = async (req, res) => {
 };
 
 exports.createExperience = async (req, res) => {
-  const { company, position, logo, description, startDate, endDate, relatedCertificationId } = req.body;
+  const { company, position, logo, description, startDate, endDate } = req.body;
   try {
     const result = await prisma.experience.create({
       data: {
@@ -75,8 +78,7 @@ exports.createExperience = async (req, res) => {
         logo,
         description,
         startDate,
-        endDate,
-        relatedCertificationId: relatedCertificationId ? parseInt(relatedCertificationId) : null
+        endDate
       }
     });
     res.status(201).json(result);
@@ -88,7 +90,7 @@ exports.createExperience = async (req, res) => {
 
 exports.updateExperience = async (req, res) => {
   const { id } = req.params;
-  const { company, position, logo, description, startDate, endDate, relatedCertificationId } = req.body;
+  const { company, position, logo, description, startDate, endDate } = req.body;
   try {
     const result = await prisma.experience.update({
       where: { id: parseInt(id) },
@@ -98,8 +100,7 @@ exports.updateExperience = async (req, res) => {
         logo,
         description,
         startDate,
-        endDate,
-        relatedCertificationId: relatedCertificationId ? parseInt(relatedCertificationId) : null
+        endDate
       }
     });
 
@@ -285,6 +286,73 @@ exports.removeProjectFromExperience = async (req, res) => {
       return res.status(404).json({ message: 'Relation not found' });
     }
     console.error("Error removing project from experience:", error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+// Experience-Certification Relations
+exports.addCertificationToExperience = async (req, res) => {
+  const { experienceId } = req.params;
+  const { certificationId } = req.body;
+
+  try {
+    // Verify experience and certification exist
+    const [experience, certification] = await Promise.all([
+      prisma.experience.findUnique({ where: { id: parseInt(experienceId) } }),
+      prisma.certification.findUnique({ where: { id: parseInt(certificationId) } })
+    ]);
+
+    if (!experience || !certification) {
+      return res.status(404).json({ message: 'Experience or Certification not found' });
+    }
+
+    // Check if relation already exists
+    const existing = await prisma.experienceCertification.findUnique({
+      where: {
+        experienceId_certificationId: {
+          experienceId: parseInt(experienceId),
+          certificationId: parseInt(certificationId)
+        }
+      }
+    });
+
+    if (existing) {
+      return res.status(400).json({ message: 'Certification already linked to this experience' });
+    }
+
+    const relation = await prisma.experienceCertification.create({
+      data: {
+        experienceId: parseInt(experienceId),
+        certificationId: parseInt(certificationId)
+      }
+    });
+
+    res.status(201).json(relation);
+  } catch (error) {
+    console.error("Error adding certification to experience:", error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+exports.removeCertificationFromExperience = async (req, res) => {
+  const { experienceId, certificationId } = req.params;
+
+  try {
+    await prisma.experienceCertification.delete({
+      where: {
+        experienceId_certificationId: {
+          experienceId: parseInt(experienceId),
+          certificationId: parseInt(certificationId)
+        }
+      }
+    });
+
+    res.status(200).json({ message: 'Certification removed from experience' });
+  } catch (error) {
+    if (error.code === 'P2025') {
+      return res.status(404).json({ message: 'Relation not found' });
+    }
+    console.error("Error removing certification from experience:", error);
     res.status(500).json({ message: "Server Error" });
   }
 };

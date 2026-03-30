@@ -11,7 +11,9 @@ const {
     updateExperienceImage,
     deleteExperienceImage,
     addProjectToExperience,
-    removeProjectFromExperience
+    removeProjectFromExperience,
+    addCertificationToExperience,
+    removeCertificationFromExperience
 } = require('../controllers/experienceController');
 const { protect } = require('../middleware/authMiddleware');
 const { readOnlyProtect } = require('../middleware/readOnlyProtect');
@@ -41,5 +43,12 @@ router.route('/:experienceId/projects')
 
 router.route('/:experienceId/projects/:projectId')
     .delete(protect, readOnlyProtect, removeProjectFromExperience);
+
+// Experience-Certification Relations
+router.route('/:experienceId/certifications')
+    .post(protect, readOnlyProtect, addCertificationToExperience);
+
+router.route('/:experienceId/certifications/:certificationId')
+    .delete(protect, readOnlyProtect, removeCertificationFromExperience);
 
 module.exports = router;
